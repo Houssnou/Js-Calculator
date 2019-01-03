@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery Calculator</title>
+
+  <!-- Added link to the jQuery Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Added a link to Bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+  <!-- Jumbotron for Title -->
+  <div class="jumbotron">
+    <h1 class="text-center">jQuery Calculator</h1>
+    <h3 class="text-center">Perform basic mathematic operations using the power of jQuery!</h3>
+  </div>
+
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Calculator Card -->
+      <div class="col-lg-4">
+        <div class="card">
+          <h3 class="card-header">Calculator</h3>
+
+          <div class="card-body">
+            <button id="button-1" class="btn btn-primary number" value="1">
+              <h1>1</h1>
+            </button>
+            <button id="button-2" class="btn btn-primary number" value="2">
+              <h1>2</h1>
+            </button>
+            <button id="button-3" class="btn btn-primary number" value="3">
+              <h1>3</h1>
+            </button>
+            <button id="button-plus" class="btn btn-danger operator" value="plus">
+              <h1>+</h1>
+            </button>
+            <br><br>
+            <button id="button-4" class="btn btn-primary number" value="4">
+              <h1>4</h1>
+            </button>
+            <button id="button-5" class="btn btn-primary number" value="5">
+              <h1>5</h1>
+            </button>
+            <button id="button-6" class="btn btn-primary number" value="6">
+              <h1>6</h1>
+            </button>
+            <button id="button-minus" class="btn btn-danger operator" value="minus">
+              <h1>&minus;</h1>
+            </button>
+            <br><br>
+            <button id="button-7" class="btn btn-primary number" value="7">
+              <h1>7</h1>
+            </button>
+            <button id="button-8" class="btn btn-primary number" value="8">
+              <h1>8</h1>
+            </button>
+            <button id="button-9" class="btn btn-primary number" value="9">
+              <h1>9</h1>
+            </button>
+            <button id="button-multiply" class="btn btn-danger operator" value="times">
+              <h1>&times;</h1>
+            </button>
+            <br><br>
+            <button id="button-0" class="btn btn-primary number" value="0">
+              <h1>0</h1>
+            </button>
+            <button id="button-divide" class="btn btn-danger operator" value="divide">
+              <h1>&divide;</h1>
+            </button>
+            <button id="button-power" class="btn btn-danger operator" value="power">
+              <h1>^</h1>
+            </button>
+            <button id="button-equal" class="btn btn-success equal" value="equals">
+              <h1>=</h1>
+            </button>
+            <br><br>
+            <button id="button-clear" class="btn btn-dark clear" value="clear">
+              <h1>clear</h1>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div class="col-lg-6">
+        <div class="card">
+          <h3 class="card-header">Result</h3>
+          <div class="card-body">
+            <h1 id="first-number"></h1>
+            <h1 id="operator"></h1>
+            <h1 id="second-number"></h1>
+            <hr>
+            <h1 id="result"></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // variables 
+      var firstNumber = "";
+      var secondNumber = "";
+      var operator = "";
+      var result = 0;
+      var isFirstNumber = false;
+      var isOperator = false;
+      var isSecondNumber = false;
+
+      //event listener for a click on .number element.
+      //how do we know to add number pressed to firstNumber vs secondNumber
+      $(".number").on("click", function () {
+
+        var numSelected = $(this).attr("value");
+        // if operator hasn't been selected add numSelected to firstNumber
+        if (!isOperator) {
+          firstNumber += numSelected;
+          $("#first-number").text(firstNumber);
+          isFirstNumber = true;
+        } else {
+          secondNumber += numSelected;
+          $("#second-number").text(secondNumber);
+          isSecondNumber = true;
+        }
+      });
+
+      //event listener for when I click on a button with .operator to capture what operator i press 
+      $(".operator").on("click", function () {
+        if (isFirstNumber && !isOperator) {
+          // get operator value
+          operator = $(this).attr("value");
+          //get operator symbol 
+          var operatorSymbol = $(this).text();
+          console.log(operatorSymbol);
+          //change isOperator to true
+          isOperator = true;
+          $("#operator").text(operatorSymbol);
+        }
+      });
+
+      //event listener for when the equal button is clicked on to get the total
+      $(".equal").on("click", function () {
+        //
+        if (isSecondNumber) {
+          //convert both value of fisrtNumber and SecondNumber to integer
+          num1 = parseInt(firstNumber);
+          num2 = parseInt(secondNumber);
+          if (operator === "plus") {
+            result = num1 + num2;
+          } else if (operator === "minus") {
+            result = num1 - num2;
+          } else if (operator === "times") {
+            result = num1 * num2;
+          } else if (operator === "divide") {
+            result = num1 / num2;
+          } else if (operator === "power") {
+            result = num1 ** num2;
+          }
+          $("#result").text(result);
+        }
+      });
+
+      //even listener for the clear button
+      $(".clear").on("click", function () {
+        //this remove actually clear the elemt on the page
+        $("#first-number").empty();
+        $("#second-number").empty();
+        $("#operator").empty();
+        $("#result").empty();
+        //clear out the varaibles holding data
+        firstNumber = "";
+        secondNumber = "";
+        operator = "";
+        result = 0;
+        isFirstNumber = false;
+        isOperator = false;
+        isSecondNumber = false;
+      });
+    });
+  </script>
+
+</body>
+
+</html>
